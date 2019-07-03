@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="library_name">MediaPicker</string>
+    <string name="all_dir_name">所有图片和视频</string>
+    <string name="all_video">所有视频</string>
+    <string name="all_image">所有图片</string>
+    <string name="select_title">选择图片和视频</string>
+    <string name="select_video_title">选择视频</string>
+    <string name="select_image_title">选择照片</string>
+    <string name="video_dir_name">所有视频</string>
+    <string name="msg_amount_limit">数量超出限制!</string>
+    <string name="msg_size_limit">超出最大文件大小</string>
+    <string name="select_null">请选择一个文件</string>
+    <string name="done">完成</string>
+    <string name="count_string"></string>
+    <string name="preview">预览</string>
+    <string name="select">选择</string>
+    <string name="video">视频</string>
+    <string name="cant_play_video">无法播放视频!</string>
+    <string name="READ_EXTERNAL_STORAGE">请给与读取文件存储的权限.</string>
+</resources>

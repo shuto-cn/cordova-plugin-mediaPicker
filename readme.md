@@ -1,4 +1,4 @@
-# MediaPicker v:2.4.3
+# MediaPicker v:2.4.3(添加中文语言支持)
 
 android ios mediaPicker support  selection of multiple image and video gif  (Support Chinese, English, Spanish, Portuguese, and Turkish)</br>
 
@@ -11,27 +11,48 @@ android 和 ios cordova图片视频选择插件，支持多图 视频 gif，ui�
 
 use npm OR github:
 
+```bash
+  cordova plugin add https://github.com/shuto-cn/cordova-plugin-mediaPicker.git --variable IOS_PHOTO_LIBRARY_USAGE_DESCRIPTION="your usage message"
 ```
-  cordova plugin add https://github.com/DmcSDK/cordova-plugin-mediaPicker.git --variable IOS_PHOTO_LIBRARY_USAGE_DESCRIPTION="your usage message"
+
+ionic项目config.xml中需要声明ios的三个权限
+
+```xml
+<edit-config file="*-Info.plist" mode="merge" target="NSCameraUsageDescription">
+            <string>To scan barcodes</string>
+        </edit-config>
+        <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryUsageDescription">
+            <string>To capture photo</string>
+        </edit-config>
+        <edit-config file="*-Info.plist" mode="merge" target="NSPhotoLibraryAddUsageDescription">
+            <string>To capture photo</string>
+        </edit-config>
 ```
+
+
+
+
 
 ## Example
+
 html code:
 
-    <body>
-        <div>
-            <img name="imgView"  height="100px" >
-            <img name="imgView"  height="100px" >
-        </div>
-        <button id="openBtn">open</button>
-        <button id="uploadBtn">upload</button>
-        <button id="takePhotoBtn">takePhoto</button>
-        <script type="text/javascript" src="cordova.js"></script>
-        <script type="text/javascript" src="js/index.js"></script>
-    </body>
+```html
+<body>
+    <div>
+        <img name="imgView"  height="100px" >
+        <img name="imgView"  height="100px" >
+    </div>
+    <button id="openBtn">open</button>
+    <button id="uploadBtn">upload</button>
+    <button id="takePhotoBtn">takePhoto</button>
+    <script type="text/javascript" src="cordova.js"></script>
+    <script type="text/javascript" src="js/index.js"></script>
+</body>
+```
 
 demo.js **simple** code: 
-```
+```javascript
 var resultMedias=[];
 var imgs = document.getElementsByName('imgView');
 var args = {
@@ -60,11 +81,11 @@ function getThumbnail(medias) {
 }
 
 function loadingUI() {}
-```    
+```
 
 ### upload and compress 上传 和 压缩
 demo.js **upload** and **compress** code:
-```
+```javascript
 document.getElementById('uploadBtn').onclick = function() {
     //1.please:  cordova plugin add cordova-plugin-file-transfer
     //2.see:  https://github.com/apache/cordova-plugin-file-transfer
@@ -89,7 +110,7 @@ function compressImage() {
 document.addEventListener("MediaPicker.CompressVideoEvent", function(data) {
     alert(data.status + "||" + data.index);
 }, false);
-```    
+```
 
 ### takePhoto 拍照 
 demo.js **takePhoto** code:
@@ -97,7 +118,7 @@ demo.js **takePhoto** code:
 please add : cordova plugin add cordova-plugin-camera
 
 cameraOptions docs: https://cordova.apache.org/docs/en/latest/reference/cordova-plugin-camera/index.html#camera
-```
+```javascript
 //please add : cordova plugin add cordova-plugin-camera
 document.getElementById('takePhotoBtn').onclick = function() {
     var cameraOptions={ quality: 25,mediaType: Camera.MediaType.PICTURE };//see cordova camera docs
@@ -107,7 +128,7 @@ document.getElementById('takePhotoBtn').onclick = function() {
             getThumbnail(resultMedias);
       }, function(e) { console.log(e) }, cameraOptions);
 };
-```    
+```
 
 # More api 其他API
 [API](https://github.com/DmcSDK/cordova-plugin-mediaPicker/blob/master/www/MediaPicker.js) https://github.com/DmcSDK/cordova-plugin-mediaPicker/blob/master/www/MediaPicker.js</br>
