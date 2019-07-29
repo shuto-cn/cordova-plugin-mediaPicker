@@ -10,6 +10,7 @@
 - (void)getMedias:(CDVInvokedUrlCommand*)command;
 - (void)takePhoto:(CDVInvokedUrlCommand*)command;
 - (void)extractThumbnail:(CDVInvokedUrlCommand*)command;
+//+ (NSString)base64StringFromString:(NSString *)filePathString;
 
 @end
 
@@ -151,6 +152,37 @@
     }];
 
 }
+    
+    //替换base64中的换行等
+- (NSString  *)stringrReplace:(NSString *)string{
+    
+    NSRegularExpression *regularExpression = [NSRegularExpression regularExpressionWithPattern:
+                                              @"[\\s*\t\n\r]"
+                                                                                       options:0 error:nil];
+    
+    
+    string  = [regularExpression stringByReplacingMatchesInString:string options:0 range:NSMakeRange(0, string.length) withTemplate:@""];
+    return string;
+}
+ 
+//    视频转base64
+- (NSString*)base64StringFromString:(NSString *)filePathString {
+    
+    // 获取文件的二进制数据 data
+    NSData *data = [NSData dataWithContentsOfFile:filePathString];
+        
+        // 转码 --> 码文
+    NSString *base64String = [data base64EncodedStringWithOptions:0];
+    
+//    [self stringrReplace:base64String];
+    
+    base64String = [base64String stringByReplacingOccurrencesOfString:@"/" withString:@""];
+    base64String = [base64String stringByReplacingOccurrencesOfString:@"\r" withString:@""];
+    base64String = [base64String stringByReplacingOccurrencesOfString:@"\n" withString:@""];
+    
+    return base64String;
+        
+}
 
 -(void)videoToSandboxCompress:(PHAsset *)asset dmcPickerPath:(NSString*)dmcPickerPath aListArray:(NSMutableArray*)aListArray selectArray:(NSMutableArray*)selectArray index:(int)index{
     NSString *compressStartjs = [NSString stringWithFormat:@"MediaPicker.compressEvent('%@',%i)", @"start",index];
@@ -264,6 +296,7 @@
     NSMutableDictionary *options = [command.arguments objectAtIndex: 0];
     UIImage * image=[self getThumbnailImage:[options objectForKey:@"path"] type:[options objectForKey:@"mediaType"]];
     NSString *thumbnail=[self thumbnailImage:image quality:[[options objectForKey:@"thumbnailQuality"] integerValue]];
+//    NSString *thumbnail=[self base64StringFromString:[options objectForKey:@"path"]];
 
     [options setObject:thumbnail forKey:@"thumbnailBase64"];
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:options] callbackId:callbackId];

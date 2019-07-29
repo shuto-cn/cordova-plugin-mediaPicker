@@ -43,10 +43,17 @@ public class MediaPicker extends CordovaPlugin {
     private  int thumbnailH=200;
     @Override
     public boolean execute(String action, JSONArray args, CallbackContext callbackContext) throws JSONException {
-        getPublicArgs(args);
+        if (action.equals("getMedias")) {
+            getPublicArgs(args);
+        }
+
 
         if (action.equals("getMedias")) {
-            this.getMedias(args, callbackContext);
+            try {
+                this.getMedias(args, callbackContext);
+            } catch (Exception e) {
+            }
+
             return true;
         }else if(action.equals("takePhoto")){
             this.takePhoto(args, callbackContext);
@@ -170,7 +177,7 @@ public class MediaPicker extends CordovaPlugin {
                                 object.put("size",media.size);
                                 object.put("name",media.name);
                                 object.put("index",index);
-                                object.put("mediaType",media.mediaType==3?"video":"image");
+                                object.put("mediaType",media.mediaType==3?"mp4":"jpeg");
                                 jsonArray.put(object);
                                 index++;
                             }
@@ -203,7 +210,12 @@ public class MediaPicker extends CordovaPlugin {
                 String path =jsonObject.getString("path");
                 jsonObject.put("exifRotate",getBitmapRotate(path));
                 int mediatype = "video".equals(jsonObject.getString("mediaType"))?3:1;
-                jsonObject.put("thumbnailBase64",extractThumbnail(path,mediatype,thumbnailQuality));
+                if("video".equals(jsonObject.getString("mediaType"))){
+                    jsonObject.put("thumbnailBase64",PicUtil.encodeBase64File(path));
+                    jsonObject.put("mediaType",path.substring(path.indexOf('.'),path.length()-1));
+                }else{
+                    jsonObject.put("thumbnailBase64",PicUtil.compressImage(path,"jpeg"));
+                }
             } catch (Exception e) {
                 e.printStackTrace();
             }
