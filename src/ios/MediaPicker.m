@@ -294,10 +294,14 @@
 {
     callbackId=command.callbackId;
     NSMutableDictionary *options = [command.arguments objectAtIndex: 0];
-    UIImage * image=[self getThumbnailImage:[options objectForKey:@"path"] type:[options objectForKey:@"mediaType"]];
-    NSString *thumbnail=[self thumbnailImage:image quality:[[options objectForKey:@"thumbnailQuality"] integerValue]];
-//    NSString *thumbnail=[self base64StringFromString:[options objectForKey:@"path"]];
-
+    UIImage * image;
+    NSString *thumbnail;
+    if([@"image" isEqualToString: [options objectForKey:@"mediaType"]]){
+        image=[self getThumbnailImage:[options objectForKey:@"path"] type:[options objectForKey:@"mediaType"]];
+        thumbnail=[self thumbnailImage:image quality:[[options objectForKey:@"thumbnailQuality"] integerValue]];
+    }else{
+        thumbnail=[self base64StringFromString:[options objectForKey:@"path"]];
+    }
     [options setObject:thumbnail forKey:@"thumbnailBase64"];
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:options] callbackId:callbackId];
 }
