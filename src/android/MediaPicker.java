@@ -177,7 +177,7 @@ public class MediaPicker extends CordovaPlugin {
                                 object.put("size",media.size);
                                 object.put("name",media.name);
                                 object.put("index",index);
-                                object.put("mediaType",media.mediaType==3?"mp4":"jpeg");
+                                object.put("mediaType",media.mediaType==3?"video":"jpeg");
                                 jsonArray.put(object);
                                 index++;
                             }
