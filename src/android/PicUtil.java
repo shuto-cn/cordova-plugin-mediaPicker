@@ -160,7 +160,7 @@ public class PicUtil {
                 e.printStackTrace();
             }
         }
-        return base64;
+        return base64.replaceAll("\r|\n","");
     }
 
 
