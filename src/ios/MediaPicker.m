@@ -174,9 +174,6 @@
         // 转码 --> 码文
     NSString *base64String = [data base64EncodedStringWithOptions:0];
     
-//    [self stringrReplace:base64String];
-    
-    base64String = [base64String stringByReplacingOccurrencesOfString:@"/" withString:@""];
     base64String = [base64String stringByReplacingOccurrencesOfString:@"\r" withString:@""];
     base64String = [base64String stringByReplacingOccurrencesOfString:@"\n" withString:@""];
     
@@ -296,13 +293,16 @@
     NSMutableDictionary *options = [command.arguments objectAtIndex: 0];
     UIImage * image;
     NSString *thumbnail;
+    NSString *videoFirstPhoto;
     if([@"image" isEqualToString: [options objectForKey:@"mediaType"]]){
         image=[self getThumbnailImage:[options objectForKey:@"path"] type:[options objectForKey:@"mediaType"]];
         thumbnail=[self thumbnailImage:image quality:[[options objectForKey:@"thumbnailQuality"] integerValue]];
     }else{
         thumbnail=[self base64StringFromString:[options objectForKey:@"path"]];
+        videoFirstPhoto=[self thumbnailImage:[self getThumbnailImage:[options objectForKey:@"path"] type:[options objectForKey:@"mediaType"]] quality:[[options objectForKey:@"thumbnailQuality"] integerValue]];
     }
     [options setObject:thumbnail forKey:@"thumbnailBase64"];
+    [options setObject:videoFirstPhoto forKey:@"imageurl"];
     [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:options] callbackId:callbackId];
 }
 
@@ -335,7 +335,7 @@
             [options setObject:size forKey:@"size"];
             [options setObject:filename forKey:@"name"];
             [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:options] callbackId:callbackId];
-        }        
+        }
         
     }else{
         [self.commandDelegate sendPluginResult:[CDVPluginResult resultWithStatus:CDVCommandStatus_OK messageAsDictionary:options] callbackId:callbackId];

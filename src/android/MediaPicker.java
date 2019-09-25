@@ -212,7 +212,9 @@ public class MediaPicker extends CordovaPlugin {
                 int mediatype = "video".equals(jsonObject.getString("mediaType"))?3:1;
                 if("video".equals(jsonObject.getString("mediaType"))){
                     jsonObject.put("thumbnailBase64",PicUtil.encodeBase64File(path));
-                    jsonObject.put("mediaType",path.substring(path.indexOf('.'),path.length()-1));
+                    jsonObject.put("mediaType",path.substring(path.indexOf('.')+1,path.length()));
+                    jsonObject.put("imageurl",extractThumbnail(path,mediatype,thumbnailQuality));
+
                 }else{
                     jsonObject.put("thumbnailBase64",PicUtil.compressImage(path,"jpeg"));
                 }
